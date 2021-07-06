@@ -1,77 +1,131 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card class="logo py-4 d-flex justify-center">
-        <NuxtLogo />
-        <VuetifyLogo />
-      </v-card>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
+  <div v-if="isDataLoaded">
+    <v-main class="py-16">
+      <v-app-bar fixed color="#fff" elevate-on-scroll></v-app-bar>
+      <v-container class="max-w-screen-md">
+        <div class="lite-margin">
+          <div id="header" class="d-flex mb-48">
+            <responsive-avatar :src="profile['hero_image']" />
+            <div class="px-3" />
+            <div>
+              <h1 class="text-h6 text-sm-h4 font-weight-medium">
+                {{ profile['name'] }}
+              </h1>
+              <div class="d-flex pb-2 pb-sm-3 align-center">
+                <star-rating :value="profile['star_rating']"></star-rating>
+                <v-chip
+                  small
+                  outlined
+                  class="rounded align-center"
+                  color="secondary"
+                  >{{ profile['category'] }}</v-chip
+                >
+              </div>
+              <div class="text-caption text-sm-body-2 pb-2">
+                {{ profile['address'] }}
+              </div>
+              <div class="d-flex align-center">
+                <circle-rating :value="profile['review_rating']" />
+                <span class="text-caption text-sm-body-2 pl-2">
+                  Excellent ·&nbsp;
+                </span>
+                <span class="text-caption text-sm-body-2">
+                  {{ profile['review_count'].toLocaleString() }} reviews
+                </span>
+              </div>
+            </div>
           </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+
+          <!-- end-header -->
+
+          <div id="gallery">
+            <v-tabs centered height="53" color="secondary">
+              <v-tab>
+                <div class="d-flex align-center text-caption">
+                  <v-icon size="16" left style="margin-right: 0">
+                    mdi-grid
+                  </v-icon>
+                  <span
+                    class="d-none d-sm-flex font-weight-medium pl-2"
+                    style="font-size: 0.75rem"
+                  >
+                    Photos
+                  </span>
+                </div>
+              </v-tab>
+            </v-tabs>
+          </div>
+          
+          <!-- end-gallery -->
+
+          <!-- separator -->
+
+          <!-- raw data -->
+          <h1>Hello world!</h1>
+          <h1>Hello world!</h1>
+          {{ rawData }}
+        </div>
+      </v-container>
+    </v-main>
+    <v-footer class="d-none d-sm-flex" absolute>
+      <v-container class="max-w-screen-md">
+        <span> © </span>
+        Wisatabook · <span>Terms &amp; Condition</span>
+      </v-container>
+    </v-footer>
+  </div>
 </template>
+
+<script>
+import CircleRating from '../components/CircleRating.vue'
+import ResponsiveAvatar from '../components/ResponsiveAvatar.vue'
+import StarRating from '../components/StarRating.vue'
+import { mapGetters } from 'vuex'
+
+export default {
+  components: { ResponsiveAvatar, CircleRating, StarRating },
+  async created() {
+    await this.$store.dispatch('getData')
+    this.isDataLoaded = true
+  },
+  data() {
+    return {
+      isDataLoaded: false,
+    }
+  },
+  computed: {
+    rawData() {
+      return this.$store.state.data
+    },
+
+    ...mapGetters(['profile']),
+  },
+}
+</script>
+
+<style lang="scss">
+* {
+  outline: red 0.1px dashed !important;
+}
+
+.container {
+  .lite-margin {
+    margin: {
+      top: min(max(29px, 7vh), 92px);
+      bottom: min(max(29px, 9vh), 92px);
+    }
+  }
+}
+
+.v-tabs-slider-wrapper {
+  top: 0;
+}
+
+.max-w-screen-md {
+  max-width: 924px !important;
+}
+
+.mb-48 {
+  margin-bottom: 48px;
+}
+</style>

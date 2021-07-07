@@ -18,36 +18,41 @@ export const mutations = {
 export const getters = {
   profile({ data }) {
     const {
-      hero_image,
-      name,
-      star_rating,
-      category,
-      address,
       review_rating,
-      review_count,
+      ...props
     } = data['catalog_data']
 
+    function nameRating(rating) {
+      return rating >= 90
+        ? 'Excellent'
+        : rating >= 80
+        ? 'Very Good'
+        : rating >= 75
+        ? 'Good'
+        : rating >= 60
+        ? 'Acceptable'
+        : 'Poor'
+    }
+
+    const named_rating = nameRating(+review_rating)
+
     return {
-      hero_image,
-      name,
-      star_rating,
-      category,
-      address,
       review_rating,
-      review_count,
+      named_rating,
+      ...props
     }
   },
 
-  // images({ data }) {
-  //   images = data.images
+  images({ data }) {
+    const images = data.images
+    const captions = ['All,', ...images.reduce(reducerCaption, new Set())]
 
-  //   function reducerImageCaption(acc, curr) {
-  //     acc.add(curr)
-  //     return acc
-  //   }
-
-  //   const captions = [...images.reduce(reducerImageCaption, new Set())]
-
-  //   return {}
-  // },
+    function reducerCaption(acc, curr) {
+      acc.add(curr.caption)
+      return acc
+    }
+    return {
+      captions,
+    }
+  },
 }

@@ -1,5 +1,12 @@
 <template>
-  <v-progress-circular :value="value" color="purple" :size="34" :rotate="270">
+  <v-progress-circular
+    :value="value"
+    color="purple darken-1"
+    :size="$vuetify.breakpoint.xs ? 32 : 34"
+    :rotate="270"
+    width="3"
+    cla
+  >
     <div class="text-caption text-sm-body-2 font-weight-medium">
       {{ value }}
     </div>

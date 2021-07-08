@@ -1,36 +1,46 @@
 <template>
   <div v-if="isDataLoaded">
     <v-main class="py-16">
-      <v-app-bar fixed color="#fff" elevate-on-scroll></v-app-bar>
-      <v-container class="max-w-screen-md">
+      <v-container class="max-w-screen-md xs:mt--8">
         <div class="lite-margin">
+          <v-app-bar fixed color="#fff" elevate-on-scroll>
+            <v-container class="max-w-screen-md">
+              <v-row no-gutters>
+                <div class="d-flex justify-end col-sm-12 col-12">
+                  <div class="mt-5">
+                    <theme-switcher />
+                  </div>
+                </div>
+              </v-row>
+            </v-container>
+          </v-app-bar>
           <div id="header" class="d-flex mb-48">
-            <responsive-avatar :src="profile['hero_image']" />
+            <responsive-avatar :src="getProfile['hero_image']" />
             <div class="px-3" />
             <div>
               <h1 class="text-h6 text-sm-h4 font-weight-medium">
-                {{ profile['name'] }}
+                {{ getProfile['name'] }}
               </h1>
               <div class="d-flex pb-2 pb-sm-3 align-center">
-                <star-rating :value="profile['star_rating']"></star-rating>
+                <star-rating :value="getProfile['star_rating']"></star-rating>
                 <v-chip
                   small
                   outlined
                   class="rounded align-center"
                   color="secondary"
-                  >{{ profile['category'] }}</v-chip
+                  >{{ getProfile['category'] }}</v-chip
                 >
               </div>
               <div class="text-caption text-sm-body-2 pb-2">
-                {{ profile['address'] }}
+                {{ getProfile['address'] }}
               </div>
               <div class="d-flex align-center">
-                <circle-rating :value="profile['review_rating']" />
+                <circle-rating :value="getProfile['review_rating']" />
                 <span class="text-caption text-sm-body-2 pl-2">
-                  {{ profile['named_rating']}} ·&nbsp;
+                  {{ getProfile['named_rating'] }} ·&nbsp;
                 </span>
                 <span class="text-caption text-sm-body-2">
-                  {{ profile['review_count'].toLocaleString() }} reviews
+                  {{ getProfile['review_count'].toLocaleString() }} reviews
                 </span>
               </div>
             </div>
@@ -38,8 +48,9 @@
 
           <!-- end-header -->
 
-          <div id="gallery">
-            <v-tabs centered height="53" color="secondary">
+          <div id="gallery" class="xs-no-gutters">
+            <v-divider></v-divider>
+            <v-tabs centered height="53">
               <v-tab>
                 <div class="d-flex align-center text-caption">
                   <v-icon size="16" left style="margin-right: 0">
@@ -55,69 +66,59 @@
               </v-tab>
             </v-tabs>
 
-            {{ images['captions'] }}
-
-            <v-item-group
-              v-model="window"
-              class="shrink mr-6"
-              mandatory
-              tag="v-flex"
+            <v-slide-group
+              show-arrows
+              id="category-select"
+              v-model="image_category"
             >
-              <v-item v-for="n in length" :key="n" v-slot="{ active, toggle }">
-                <div>
-                  <v-btn :input-value="active" icon @click="toggle">
-                    <v-icon>mdi-record</v-icon>
-                  </v-btn>
+              <v-slide-item
+                v-for="category in getImgCategories"
+                :key="category"
+                v-slot="{ active, toggle }"
+              >
+                <v-chip-group>
+                  <v-chip
+                    class="text-sz-xs font-weight-medium"
+                    :input-value="active"
+                    active-class="primary--text font-weight-bold"
+                    outlined
+                    rounded
+                    @click="toggle"
+                  >
+                    {{ category }}
+                  </v-chip>
+                </v-chip-group>
+              </v-slide-item>
+            </v-slide-group>
+
+            <v-window v-model="image_category">
+              <v-window-item
+                v-for="category in getImgCategories"
+                :key="category"
+              >
+                <v-container>
+                  <v-row>
+                    <v-col> </v-col>
+                  </v-row>
+                </v-container>
+                <div class="d-flex flex-wrap">
+                  <div
+                    style="flex: 0 0 33.333333%"
+                    v-for="(img, index) in getImg[category]"
+                    :key="index"
+                    class=""
+                  >
+                    <v-img
+                      :lazy-src="img.size_xs"
+                      :src="img.size_lg"
+                      :srcset="`${img.size_sm} 350w`"
+                      class=""
+                      :alt="`${category}-${index}`"
+                      :aspect-ratio="1"
+                    />
+                  </div>
                 </div>
-              </v-item>
-            </v-item-group>
-            <v-window v-model="window" class="elevation-1" vertical>
-              <v-window-item v-for="n in length" :key="n">
-                <v-card flat>
-                  <v-card-text>
-                    <v-row class="mb-4" align="center">
-                      <v-avatar color="grey" class="mr-4"></v-avatar>
-                      <strong class="text-h6">Title {{ n }}</strong>
-                      <v-spacer></v-spacer>
-                      <v-btn icon>
-                        <v-icon>mdi-account</v-icon>
-                      </v-btn>
-                    </v-row>
-
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                      Duis aute irure dolor in reprehenderit in voluptate velit
-                      esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                      sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.
-                    </p>
-
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                      Duis aute irure dolor in reprehenderit in voluptate velit
-                      esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                      sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.
-                    </p>
-
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                      Duis aute irure dolor in reprehenderit in voluptate velit
-                      esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                      sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.
-                    </p>
-                  </v-card-text>
-                </v-card>
+                <!-- {{ getImg[category]['xs'] }} -->
               </v-window-item>
             </v-window>
           </div>
@@ -126,10 +127,21 @@
 
           <!-- separator -->
 
+          <v-divider class="my-8 rounded-lg"></v-divider>
+          <v-expansion-panels>
+            <v-expansion-panel>
+              <v-expansion-panel-header class="text-h5 font-weight-medium">
+                Raw Data
+              </v-expansion-panel-header>
+              <v-expansion-panel-content class="text-caption">
+                {{ rawData }}
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+
           <!-- raw data -->
-          <h1>Hello world!</h1>
-          <h1>Hello world!</h1>
-          {{ rawData }}
+
+          <!-- {{ rawData }} -->
         </div>
       </v-container>
     </v-main>
@@ -147,33 +159,43 @@ import CircleRating from '../components/CircleRating.vue'
 import ResponsiveAvatar from '../components/ResponsiveAvatar.vue'
 import StarRating from '../components/StarRating.vue'
 import { mapGetters } from 'vuex'
+import ThemeSwitcher from '../components/ThemeSwitcher.vue'
 
 export default {
-  components: { ResponsiveAvatar, CircleRating, StarRating },
+  theme: { dark: false },
+  components: { ResponsiveAvatar, CircleRating, StarRating, ThemeSwitcher },
+
   async created() {
-    await this.$store.dispatch('getData')
+    // only loading component after data fetched, work in server
+    await this.$store.dispatch('fetchHotel')
     this.isDataLoaded = true
   },
   data() {
     return {
       isDataLoaded: false,
       length: 3,
-      window: 0,
+      onboarding: 0,
+      image_category: 'All',
     }
   },
   computed: {
     rawData() {
-      return this.$store.state.data
+      return this.$store.state.hotel
     },
-
-    ...mapGetters(['profile', 'images']),
+    ...mapGetters(['getProfile', 'getImgCategories', 'getImg']),
+  },
+  methods: {
+    toggleDarkTheme() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+      console.log(this.$vuetify.theme.dark)
+    },
   },
 }
 </script>
 
 <style lang="scss">
 * {
-  outline: red 0.1px dashed !important;
+  outline: red 1px dotted !important;
 }
 
 .container {
@@ -183,6 +205,10 @@ export default {
       bottom: min(max(29px, 9vh), 92px);
     }
   }
+}
+
+.no-transition-child > * {
+  transition: none !important;
 }
 
 .v-tabs-slider-wrapper {
@@ -195,5 +221,16 @@ export default {
 
 .mb-48 {
   margin-bottom: 48px;
+}
+
+@media (max-width: 600px) {
+  .xs-no-gutters {
+    margin-left: -12px;
+    margin-right: -12px;
+    max-width: 100vw;
+  }
+  .xs\:mt--8 {
+    margin-top: -8px;
+  }
 }
 </style>

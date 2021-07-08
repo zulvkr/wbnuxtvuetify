@@ -1,26 +1,22 @@
-export const state = () => ({
-  data: 0,
-})
+export const state = () => {}
 
 export const actions = {
-  async getData({ commit }) {
-    const data = await this.$axios.$get('/data.json')
-    commit('SET_DATA', data)
+  async fetchHotel({ commit }) {
+    const hotel = await this.$axios.$get('/data.json')
+    commit('SET_HOTEL', hotel)
   },
 }
 
 export const mutations = {
-  SET_DATA(state, data) {
-    state.data = data
+  SET_HOTEL(state, hotel) {
+    state.hotel = hotel
   },
 }
 
 export const getters = {
-  profile({ data }) {
-    const {
-      review_rating,
-      ...props
-    } = data['catalog_data']
+  getProfile({ hotel }) {
+    const { review_rating, ...props } = hotel.catalog_data
+    const named_rating = nameRating(+review_rating)
 
     function nameRating(rating) {
       return rating >= 90
@@ -34,25 +30,37 @@ export const getters = {
         : 'Poor'
     }
 
-    const named_rating = nameRating(+review_rating)
-
     return {
       review_rating,
       named_rating,
-      ...props
+      ...props,
     }
   },
 
-  images({ data }) {
-    const images = data.images
-    const captions = ['All,', ...images.reduce(reducerCaption, new Set())]
+  getImgCategories({ hotel }) {
+    return ['All', ...hotel.images.reduce(getUniqueCaptions, new Set())]
 
-    function reducerCaption(acc, curr) {
-      acc.add(curr.caption)
-      return acc
+    function getUniqueCaptions(uniques, { caption }) {
+      uniques.add(caption)
+      return uniques
     }
-    return {
-      captions,
+  },
+
+  getImg({ hotel }, { getImgCategories: cats }) {
+    const images = {}
+
+    for (const cat of cats) {
+      images[cat] = hotel.images
+        .filter(isCategory(cat))
     }
+
+    function isCategory(cat) {
+      return function ({ caption }) {
+        if (cat === 'All') return true
+        return cat === caption
+      }
+    }
+
+    return images
   },
 }

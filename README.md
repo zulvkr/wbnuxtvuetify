@@ -1,69 +1,101 @@
-# wbchallenge
+# Quick Walkthrough
 
-## Build Setup
+This piece of software is intended for coding challenge of a front-end design interview. The challenge is to replicate the design of a webpage that uses Vuetify.
+
+It is also my experimentation using Vuex, Vuetify and Nuxt. If you are the interviewer, I hope this README find you well. You could also access the video version of this README in [this youtube video](/)
+
+- [Quick Walkthrough](#quick-walkthrough)
+  - [Dependencies](#dependencies)
+  - [Installation](#installation)
+  - [State](#state)
+    - [Vuex State](#vuex-state)
+    - [Vuex Getters](#vuex-getters)
+    - [Vuex Action and Mutation](#vuex-action-and-mutation)
+  - [Components](#components)
+  - [Styling](#styling)
+    - [Responsive styling](#responsive-styling)
+
+## Dependencies
+
+- Nuxt.js with Vuetify and Axios module
+- Vue fragment
+- API for the source of data
+
+## Installation
 
 ```bash
-# install dependencies
-$ yarn install
+git clone https://github.com/zulvkr/wbnuxtvuetify.git
 
-# serve with hot reload at localhost:3000
-$ yarn dev
+cd wbnuxtvuetify
 
-# build for production and launch server
-$ yarn build
-$ yarn start
+yarn add
 
-# generate static project
-$ yarn generate
 ```
 
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
+See package.json and [Nuxt command](https://nuxtjs.org/docs/2.x/get-started/commands) for the details.
 
-## Special Directories
+## State
 
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
+States of the app are managed in both the `index.vue` component and Vuex. Vuex is responsible for data wrangling.
 
-### `assets`
+Besides that, this app calls built-in state `this.$vuetify.breakpoint.xs` and `this.$vuetify.theme.dark` (aliased `isXs` and `isDark`) to check mobile display viewport and dark theme respectively.
 
-The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
+### Vuex State
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
+- `hotel`: is the only one state managed in Vuex which contains raw data acquired from Axios.
 
-### `components`
+### Vuex Getters
 
-The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
+- `getProfile`: return object derived from `catalog_id` data with additional `named_rating` property.
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
+```js
+{}
 
-### `layouts`
+```
 
-Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
+- `getImgCategories`: return array of unique captions of all images.
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
+```js
+[]
 
+```
 
-### `pages`
+- `getImg`: return object that contains each category. Every category contains filtered `image` objects.
 
-This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
+```js
+{}
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
+```
 
-### `plugins`
+### Vuex Action and Mutation
 
-The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
+Action `fetchHotel` and mutation `SET_HOTEL` used to fetch raw data and set `hotel` state respectively.
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
+## Components
 
-### `static`
+Some small intricate parts of the page are made into components. While they are not reusable yet, it allows cleaner markup in the page. [vue-fragment](https://github.com/Thunberg087/vue-fragment) is installed so you can wrap multi-root component with `<fragment></fragment>` instead of `<div></div>`. It's an implementation of [Vue 3 fragment](https://v3.vuejs.org/guide/migration/fragments.html#overview) / [React fragment](https://reactjs.org/docs/fragments.html) in vue.js v2.
 
-This directory contains your static files. Each file inside this directory is mapped to `/`.
+## Styling
 
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
+Styling of this app leverage:
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
+- Vuetify components props if possible
+- Vuetify provided classes
+- Vuetify SASS variables
+- some custom CSS classes and... 
+- lots of inline styling. 
+- You may also want to check Vuetify settings in nuxt.config.js.
 
-### `store`
+Admittedly, custom CSS classes are made only due to some CSS are unreadable when inlined. It's a one pager project with limited time after all, so I didn't consider class reusability. Negative margins, paddings and hardcoded colors are sprinkled in the template to get the (almost) pixel perfect look.
 
-This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
+### Responsive styling
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+Responsiveness in Vuetify is managed in 2 different ways:
+
+- CSS based, breakpoint variant available for padding, margin, display and typography
+- JS based, using `this.$vuetify.breakpoint` state
+
+Both has pros and cons:
+
+- CSS based responsiveness is only limited to spacing, display and typography, which is very very limited.
+- JS based responsiveness is flexible, but it will always evaluate display port as 0 in server side.

@@ -20,7 +20,7 @@ export default {
 
   env: {
     baseURL:
-      process.env.NODE_ENV === 'production'
+      process.env.URL
         ? process.env.URL // URL environment in Netlify
         : 'http://localhost:3000',
   },

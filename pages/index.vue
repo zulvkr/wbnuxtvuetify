@@ -1,20 +1,29 @@
 <template>
   <div v-if="isDataLoaded">
     <v-main class="py-16">
-      <v-container class="max-w-screen-md xs:mt--8">
+      <v-container class="max-w-screen-md md:mt--8">
         <div class="lite-margin">
-          <v-app-bar fixed color="#fff" elevate-on-scroll>
+          <v-app-bar
+            id="fixed-bar"
+            fixed
+            :color="isDark ? 'rgb(18, 18, 18)' : 'white'"
+            elevate-on-scroll
+          >
             <v-container class="max-w-screen-md">
               <v-row no-gutters>
                 <div class="d-flex justify-end col-sm-12 col-12">
-                  <div class="mt-5">
+                  <div
+                    class="mt-5"
+                    :style="isXs ? 'margin-right: -4px' : 'margin-right: 12px'"
+                  >
                     <theme-switcher />
                   </div>
                 </div>
               </v-row>
             </v-container>
           </v-app-bar>
-          <div id="header" class="d-flex mb-48">
+
+          <div id="profile" class="d-flex mb-48">
             <responsive-avatar :src="getProfile['hero_image']" />
             <div class="px-3" />
             <div>
@@ -27,7 +36,10 @@
                   small
                   outlined
                   class="rounded align-center"
-                  color="secondary"
+                  :color="
+                    isDark ? 'accent' : 'accent accent--text text--darken-4'
+                  "
+                  :style="isDark ? 'color: white !important' : ''"
                   >{{ getProfile['category'] }}</v-chip
                 >
               </div>
@@ -46,19 +58,32 @@
             </div>
           </div>
 
-          <!-- end-header -->
+          <!-- end-profile -->
 
           <div id="gallery" class="xs-no-gutters">
-            <v-divider></v-divider>
-            <v-tabs centered height="53">
+            <v-divider class="d-none d-sm-block mx-3"></v-divider>
+
+            <v-tabs
+              id="photos-tab"
+              :fixed-tabs="isXs ? true : false"
+              centered
+              :height="isXs ? 44 : 53"
+              background-color="transparent"
+              :color="isDark ? 'white' : 'rgba(0,0,0,.87)'"
+            >
               <v-tab>
                 <div class="d-flex align-center text-caption">
-                  <v-icon size="16" left style="margin-right: 0">
+                  <v-icon
+                    :size="isXs ? 22 : 16"
+                    left
+                    style="margin-right: 0"
+                    color="gray darken-4"
+                  >
                     mdi-grid
                   </v-icon>
                   <span
                     class="d-none d-sm-flex font-weight-medium pl-2"
-                    style="font-size: 0.75rem"
+                    style="font-size: 0.75rem; padding-top: 2px"
                   >
                     Photos
                   </span>
@@ -66,69 +91,61 @@
               </v-tab>
             </v-tabs>
 
-            <v-slide-group
-              show-arrows
+            <v-chip-group
               id="category-select"
               v-model="image_category"
+              :active-class="`primary--text ${isXs ? '' : 'font-weight-bold'}`"
+              :show-arrows="isXs ? false : true"
+              :style="`margin-top: ${isXs ? '0' : '-4px'}; padding`"
+              :class="isXs ? 'py-2' : ''"
             >
-              <v-slide-item
+              <span style="padding-right: 7.5px" class="d-sm-none"></span>
+              <v-chip
                 v-for="category in getImgCategories"
                 :key="category"
-                v-slot="{ active, toggle }"
+                class="text-sz-xs font-weight-medium"
+                outlined
+                rounded
               >
-                <v-chip-group>
-                  <v-chip
-                    class="text-sz-xs font-weight-medium"
-                    :input-value="active"
-                    active-class="primary--text font-weight-bold"
-                    outlined
-                    rounded
-                    @click="toggle"
-                  >
-                    {{ category }}
-                  </v-chip>
-                </v-chip-group>
-              </v-slide-item>
-            </v-slide-group>
+                {{ category }}
+              </v-chip>
+            </v-chip-group>
 
-            <v-window v-model="image_category">
+            <v-window v-model="image_category" :class="isXs ? '' : 'pt-2'">
               <v-window-item
                 v-for="category in getImgCategories"
                 :key="category"
               >
-                <v-container>
-                  <v-row>
-                    <v-col> </v-col>
-                  </v-row>
-                </v-container>
                 <div class="d-flex flex-wrap">
                   <div
-                    style="flex: 0 0 33.333333%"
+                    :style="`flex: 0 0 33.333333%; padding: ${
+                      isXs ? '1' : '12'
+                    }px;`"
                     v-for="(img, index) in getImg[category]"
                     :key="index"
-                    class=""
                   >
                     <v-img
+                      class="img-transition opaque"
                       :lazy-src="img.size_xs"
                       :src="img.size_lg"
                       :srcset="`${img.size_sm} 350w`"
-                      class=""
                       :alt="`${category}-${index}`"
                       :aspect-ratio="1"
                     />
                   </div>
                 </div>
-                <!-- {{ getImg[category]['xs'] }} -->
               </v-window-item>
             </v-window>
           </div>
 
           <!-- end-gallery -->
 
-          <!-- separator -->
+          <v-divider
+            class="mb-8 rounded-lg d-none d-sm-block"
+            style="margin-top: 20px"
+          ></v-divider>
 
-          <v-divider class="my-8 rounded-lg"></v-divider>
-          <v-expansion-panels>
+          <v-expansion-panels class="d-none d-sm-block" id="raw-data">
             <v-expansion-panel>
               <v-expansion-panel-header class="text-h5 font-weight-medium">
                 Raw Data
@@ -138,18 +155,22 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
-
-          <!-- raw data -->
-
-          <!-- {{ rawData }} -->
         </div>
       </v-container>
     </v-main>
-    <v-footer class="d-none d-sm-flex" absolute>
-      <v-container class="max-w-screen-md">
-        <span> © </span>
-        Wisatabook · <span>Terms &amp; Condition</span>
-      </v-container>
+
+    <v-footer class="d-none d-sm-flex px-3 py-5" absolute>
+      <div class="max-w-screen-md mx-auto" style="width: 100%">
+        <span
+          style="font-family: 'Roboto'; font-size: 0.9375rem; word-spacing: 1px"
+        >
+          ©
+        </span>
+        <span style="word-spacing: 5px">Wisatabook · </span>
+        <span style="font-family: 'Roboto'; font-size: 0.875rem"
+          >Terms &amp; Condition</span
+        >
+      </div>
     </v-footer>
   </div>
 </template>
@@ -162,23 +183,31 @@ import { mapGetters } from 'vuex'
 import ThemeSwitcher from '../components/ThemeSwitcher.vue'
 
 export default {
-  theme: { dark: false },
-  components: { ResponsiveAvatar, CircleRating, StarRating, ThemeSwitcher },
+  components: {
+    ResponsiveAvatar,
+    CircleRating,
+    StarRating,
+    ThemeSwitcher,
+  },
 
   async created() {
-    // only loading component after data fetched, work in server
+    // only load template after data fetched
     await this.$store.dispatch('fetchHotel')
     this.isDataLoaded = true
   },
   data() {
     return {
       isDataLoaded: false,
-      length: 3,
-      onboarding: 0,
       image_category: 'All',
     }
   },
   computed: {
+    isXs() {
+      return this.$vuetify.breakpoint.xs
+    },
+    isDark() {
+      return this.$vuetify.theme.dark
+    },
     rawData() {
       return this.$store.state.hotel
     },
@@ -187,13 +216,13 @@ export default {
   methods: {
     toggleDarkTheme() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark
-      console.log(this.$vuetify.theme.dark)
     },
   },
 }
 </script>
 
 <style lang="scss">
+// For development
 * {
   outline: red 1px dotted !important;
 }
@@ -211,10 +240,6 @@ export default {
   transition: none !important;
 }
 
-.v-tabs-slider-wrapper {
-  top: 0;
-}
-
 .max-w-screen-md {
   max-width: 924px !important;
 }
@@ -223,14 +248,43 @@ export default {
   margin-bottom: 48px;
 }
 
-@media (max-width: 600px) {
-  .xs-no-gutters {
-    margin-left: -12px;
-    margin-right: -12px;
-    max-width: 100vw;
-  }
-  .xs\:mt--8 {
+.xs-no-gutters {
+  margin-left: -12px;
+  margin-right: -12px;
+  max-width: 100vw;
+}
+
+.no-sides {
+  margin-left: -12px;
+  margin-right: -12px;
+  max-width: 100vw;
+}
+
+@media (max-width: 960px) {
+  .md\:mt--8 {
     margin-top: -8px;
   }
+}
+
+@media (min-width: 600px) {
+  .v-tabs-slider-wrapper {
+    top: 0;
+  }
+}
+
+@media (max-width: 599px) {
+  .v-tabs-slider-wrapper {
+    left: 0px !important;
+    width: 100vw !important;
+  }
+}
+
+.img-transition {
+  transition: opacity 0.4s ease-in-out;
+  cursor: pointer;
+}
+
+.opaque:hover {
+  opacity: 0.8;
 }
 </style>

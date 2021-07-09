@@ -50,17 +50,17 @@ export const getters = {
     const images = {}
 
     for (const cat of cats) {
-      images[cat] = hotel.images
-        .filter(isCategory(cat))
+      images[cat] = hotel.images.filter(isCategory(cat))
     }
 
     function isCategory(cat) {
       return function ({ caption }) {
-        if (cat === 'All') return true
+        if (cat === 'All') {
+          return true
+        }
         return cat === caption
       }
     }
-
     return images
   },
 }

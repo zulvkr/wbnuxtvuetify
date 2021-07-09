@@ -1,8 +1,7 @@
 <template>
   <v-switch
-    v-model="switchTheme"
     inset
-    :color="`gray lighten-4`"
+    :color="$vuetify.theme.dark ? 'primary' : 'gray lighten-4'"
     prepend-icon="mdi-weather-night"
     @change="toggleDarkTheme()"
   ></v-switch>

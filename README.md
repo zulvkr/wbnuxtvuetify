@@ -1,10 +1,26 @@
 # Quick Walkthrough
 
-This piece of software are intended for coding challenge of a front-end design interview, also my experimentation using Vuex, Vuetify and Nuxt. If you are the interviewer, I hope this README find you well. You could also access the video version of this README in [this youtube video]()
+This piece of software is intended for coding challenge of a front-end design interview. The challenge is to replicate the design of a webpage that uses Vuetify.
+
+It is also my experimentation using Vuex, Vuetify and Nuxt. If you are the interviewer, I hope this README find you well. You could also access the video version of this README in [this youtube video]()
 
 ## Dependencies
 - Nuxt.js with Vuetify and Axios module
 - Vue fragment
+- API for the source of data
+
+## Installation
+
+```bash
+git clone https://github.com/zulvkr/wbnuxtvuetify.git
+
+cd wbnuxtvuetify
+
+yarn add
+
+```
+
+See package.json and [Nuxt command](https://nuxtjs.org/docs/2.x/get-started/commands) for the details.
 
 ## State
 
@@ -14,9 +30,9 @@ Besides that, this app calls built-in state `this.$vuetify.breakpoint.xs` and `t
 
 ### Vuex State
 
-- `hotel`: is the only one state managed in Vuex which contain raw data acquired from Axios.
+- `hotel`: is the only one state managed in Vuex which contains raw data acquired from Axios.
 
-#### Vuex Getters
+### Vuex Getters
 
 - `getProfile`: return object derived from `catalog_id` data with additional `named_rating` property.
 
@@ -32,7 +48,7 @@ Besides that, this app calls built-in state `this.$vuetify.breakpoint.xs` and `t
 
 ```
 
-- `getImg`: return object contain `image` filtered by each category
+- `getImg`: return object that contains each category. Every category contains filtered `image` objects.
 
 ```js
 {}
@@ -41,8 +57,22 @@ Besides that, this app calls built-in state `this.$vuetify.breakpoint.xs` and `t
 
 ### Vuex Action and Mutation
 
-Action `fetchHotel` and mutation `SET_HOTEL` used to fetch data and set hotel state respectively.
+Action `fetchHotel` and mutation `SET_HOTEL` used to fetch raw data and set `hotel` state respectively.
+
+## Components
+
+Some small intricate parts of the page are made into components. While they are not reusable yet, it allows cleaner markup in the page. [vue-fragment](https://github.com/Thunberg087/vue-fragment) is installed so you can wrap multi-root component with `<fragment></fragment>` instead of `<div></div>`. It's an implementation of [Vue 3 fragment](https://v3.vuejs.org/guide/migration/fragments.html#overview) / [React fragment](https://reactjs.org/docs/fragments.html) in vue.js v2.
 
 ## Styling
 
-Styling in this app involved a lot of negative margin, "!important" and inline styling. These practice are necessary.
+Styling of this app leverage:
+- Vuetify components props if possible
+- Vuetify provided classes (which is not very rich)
+- Vuetify SASS variables
+- some custom CSS classes and... 
+- lots of inline styling. 
+- You may also want to check Vuetify settings in nuxt.config.js.
+
+Admittedly, custom CSS classes are made only due to some CSS are unreadable when inlined. It's a one pager project with limited time after all, so I didn't consider class reusability.
+
+Negative margins, arbitrary padding and hardcoded colors are sprinkled in the template to get the (almost) pixel perfect look. To be fair, I think the original website also used them a lot.

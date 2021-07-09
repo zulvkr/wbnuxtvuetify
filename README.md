@@ -67,12 +67,21 @@ Some small intricate parts of the page are made into components. While they are 
 
 Styling of this app leverage:
 - Vuetify components props if possible
-- Vuetify provided classes (which is not very rich)
+- Vuetify provided classes
 - Vuetify SASS variables
 - some custom CSS classes and... 
 - lots of inline styling. 
 - You may also want to check Vuetify settings in nuxt.config.js.
 
-Admittedly, custom CSS classes are made only due to some CSS are unreadable when inlined. It's a one pager project with limited time after all, so I didn't consider class reusability.
+Admittedly, custom CSS classes are made only due to some CSS are unreadable when inlined. It's a one pager project with limited time after all, so I didn't consider class reusability. Negative margins, paddings and hardcoded colors are sprinkled in the template to get the (almost) pixel perfect look.
 
-Negative margins, arbitrary padding and hardcoded colors are sprinkled in the template to get the (almost) pixel perfect look. To be fair, I think the original website also used them a lot.
+### Responsive styling
+
+Responsiveness in Vuetify is managed in 2 different ways:
+- CSS based, breakpoint variant available for padding, margin, display and typography
+- JS based, using `this.$vuetify.breakpoint` state
+
+Both has pros and cons:
+
+- CSS based responsiveness is only limited to spacing, display and typography, which is very very limited.
+- JS based responsiveness is flexible, but it will always evaluate display port as 0 in server side.

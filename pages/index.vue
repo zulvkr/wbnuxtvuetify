@@ -1,32 +1,12 @@
 <template>
   <div v-if="isDataLoaded">
-    <v-main class="py-16">
-      <v-container class="max-w-screen-md md:mt--8">
+    <theme-switch-bar />
+    <v-main class="py-14 py-md-16">
+      <v-container class="max-w-screen-md">
         <div class="lite-margin">
-          <v-app-bar
-            id="fixed-bar"
-            fixed
-            :color="isDark ? 'rgb(18, 18, 18)' : 'white'"
-            elevate-on-scroll
-          >
-            <v-container class="max-w-screen-md">
-              <v-row no-gutters>
-                <div class="d-flex justify-end col-sm-12 col-12">
-                  <div
-                    class="mt-5"
-                    :style="isXs ? 'margin-right: -4px' : 'margin-right: 12px'"
-                  >
-                    <theme-switcher />
-                  </div>
-                </div>
-              </v-row>
-            </v-container>
-          </v-app-bar>
-
-          <div id="profile" class="d-flex mb-48">
+          <div id="profile" class="d-flex mb-12">
             <responsive-avatar :src="getProfile['hero_image']" />
-            <div class="px-3" />
-            <div>
+            <div class="pl-6">
               <h1 class="text-h6 text-sm-h4 font-weight-medium">
                 {{ getProfile['name'] }}
               </h1>
@@ -40,8 +20,9 @@
                     isDark ? 'accent' : 'accent accent--text text--darken-4'
                   "
                   :style="isDark ? 'color: white !important' : ''"
-                  >{{ getProfile['category'] }}</v-chip
                 >
+                  {{ getProfile['category'] }}
+                </v-chip>
               </div>
               <div class="text-caption text-sm-body-2 pb-2">
                 {{ getProfile['address'] }}
@@ -96,7 +77,7 @@
               v-model="image_category"
               :active-class="`primary--text ${isXs ? '' : 'font-weight-bold'}`"
               :show-arrows="isXs ? false : true"
-              :style="`margin-top: ${isXs ? '0' : '-4px'}; padding`"
+              :style="`margin-top: ${isXs ? '0' : '-4px'};`"
               :class="isXs ? 'py-2' : ''"
             >
               <span style="padding-right: 7.5px" class="d-sm-none"></span>
@@ -110,6 +91,8 @@
                 {{ category }}
               </v-chip>
             </v-chip-group>
+
+            <image-dialog></image-dialog>
 
             <v-window v-model="image_category" :class="isXs ? '' : 'pt-2'">
               <v-window-item
@@ -125,12 +108,13 @@
                     :key="index"
                   >
                     <v-img
-                      class="img-transition opaque"
+                      class="img-click-sm"
                       :lazy-src="img.size_xs"
                       :src="img.size_lg"
                       :srcset="`${img.size_sm} 350w`"
                       :alt="`${category}-${index}`"
                       :aspect-ratio="1"
+                      @click="zoomImg(getImg[category], index)"
                     />
                   </div>
                 </div>
@@ -151,7 +135,7 @@
                 Raw Data
               </v-expansion-panel-header>
               <v-expansion-panel-content class="text-caption">
-                {{ rawData }}
+                {{ raw_data }}
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
@@ -159,14 +143,10 @@
       </v-container>
     </v-main>
 
-    <v-footer class="d-none d-sm-flex px-3 py-5" absolute>
-      <div class="max-w-screen-md mx-auto" style="width: 100%">
-        <span
-          style="font-family: 'Roboto'; font-size: 0.9375rem; word-spacing: 1px"
-        >
-          ©
-        </span>
-        <span style="word-spacing: 5px">Wisatabook · </span>
+    <v-footer class="d-none d-sm-flex py-5 px-0" absolute>
+      <div class="max-w-screen-md mx-auto px-3" style="width: 100%">
+        <span style="font-family: 'Roboto'; font-size: 0.9375rem"> © </span>
+        <span style="word-spacing: 7px">Wisatabook · </span>
         <span style="font-family: 'Roboto'; font-size: 0.875rem"
           >Terms &amp; Condition</span
         >
@@ -176,21 +156,23 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import CircleRating from '../components/CircleRating.vue'
+import ImageDialog from '../components/ImageDialog.vue'
 import ResponsiveAvatar from '../components/ResponsiveAvatar.vue'
 import StarRating from '../components/StarRating.vue'
-import { mapGetters } from 'vuex'
-import ThemeSwitcher from '../components/ThemeSwitcher.vue'
+import ThemeSwitchBar from '../components/ThemeSwitchBar.vue'
 
 export default {
   components: {
     ResponsiveAvatar,
     CircleRating,
     StarRating,
-    ThemeSwitcher,
+    ImageDialog,
+    ThemeSwitchBar,
   },
 
-  async created() {
+  async mounted() {
     // only load template after data fetched
     await this.$store.dispatch('fetchHotel')
     this.isDataLoaded = true
@@ -208,7 +190,7 @@ export default {
     isDark() {
       return this.$vuetify.theme.dark
     },
-    rawData() {
+    raw_data() {
       return this.$store.state.hotel
     },
     ...mapGetters(['getProfile', 'getImgCategories', 'getImg']),
@@ -217,23 +199,34 @@ export default {
     toggleDarkTheme() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark
     },
+    zoomImg(list, index) {
+      if (!this.isXs) {
+        this.$store.commit('overlay/SET_IMG_LIST', list)
+        this.$store.commit('overlay/SET_IMG_INDEX', index)
+        this.$store.commit('overlay/TOGGLE_IMG')
+      }
+    },
   },
 }
 </script>
 
 <style lang="scss">
 // For development
-* {
-  outline: red 1px dotted !important;
-}
+// * {
+//   outline: red 1px dotted !important;
+// }
 
 .container {
   .lite-margin {
     margin: {
-      top: min(max(29px, 7vh), 92px);
-      bottom: min(max(29px, 9vh), 92px);
+      top: 48px;
+      bottom: 48px;
     }
   }
+}
+
+.v-toolbar__content {
+  padding: 0px !important;
 }
 
 .no-transition-child > * {
@@ -242,10 +235,6 @@ export default {
 
 .max-w-screen-md {
   max-width: 924px !important;
-}
-
-.mb-48 {
-  margin-bottom: 48px;
 }
 
 .xs-no-gutters {
@@ -260,15 +249,16 @@ export default {
   max-width: 100vw;
 }
 
-@media (max-width: 960px) {
-  .md\:mt--8 {
-    margin-top: -8px;
-  }
-}
-
 @media (min-width: 600px) {
   .v-tabs-slider-wrapper {
     top: 0;
+  }
+  .img-click-sm {
+    transition: opacity 0.4s ease-in-out;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
   }
 }
 
@@ -277,14 +267,5 @@ export default {
     left: 0px !important;
     width: 100vw !important;
   }
-}
-
-.img-transition {
-  transition: opacity 0.4s ease-in-out;
-  cursor: pointer;
-}
-
-.opaque:hover {
-  opacity: 0.8;
 }
 </style>

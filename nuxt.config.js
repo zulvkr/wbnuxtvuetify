@@ -31,7 +31,10 @@ export default {
   buildModules: ['@nuxtjs/vuetify'],
   modules: ['@nuxtjs/axios', 'nuxt-webfontloader'],
 
-  axios: {},
+  axios: {
+    // See https://github.com/nuxt-community/axios-module#options
+    baseURL: process.env.URL,
+  },
 
   vuetify: {
     treeShake: true,

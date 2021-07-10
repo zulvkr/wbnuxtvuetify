@@ -8,8 +8,7 @@
       <div>
         <v-carousel hide-delimiters height="max-content" :value="image_index">
           <v-carousel-item
-            width="900"
-            min-height="667"
+            max-width="900"
             class="mx-auto"
             v-for="(img, index) in image_list"
             :key="index"
@@ -41,6 +40,3 @@ export default {
   },
 }
 </script>
-
-<style>
-</style>

@@ -1,4 +1,4 @@
-export const state = () => {}
+export const state = () => ({ hotel: {} })
 
 export const actions = {
   async fetchHotel({ commit }) {

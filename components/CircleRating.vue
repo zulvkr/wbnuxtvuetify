@@ -2,10 +2,9 @@
   <v-progress-circular
     :value="value"
     color="secondary"
-    :size="$vuetify.breakpoint.xs ? 32 : 34"
     :rotate="270"
+    :size="$vuetify.breakpoint.xs ? 32 : 34"
     :width="$vuetify.breakpoint.xs ? 3 : 3.5"
-    cla
   >
     <div class="text-caption text-sm-body-2 font-weight-medium">
       {{ value }}

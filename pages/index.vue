@@ -3,37 +3,27 @@
     <theme-switch-bar />
     <v-main class="py-14 py-md-16">
       <v-container class="max-w-screen-md">
-        <div class="lite-margin">
+        <div class="py-12 pb-14 pb-md-12">
           <div id="profile" class="d-flex mb-12">
-            <responsive-avatar :src="getProfile['hero_image']" />
+            <responsive-avatar :src="profile['hero_image']" />
             <div class="pl-6">
               <h1 class="text-h6 text-sm-h4 font-weight-medium">
-                {{ getProfile['name'] }}
+                {{ profile['name'] }}
               </h1>
               <div class="d-flex pb-2 pb-sm-3 align-center">
-                <star-rating :value="getProfile['star_rating']"></star-rating>
-                <v-chip
-                  small
-                  outlined
-                  class="rounded align-center"
-                  :color="
-                    isDark ? 'accent' : 'accent accent--text text--darken-4'
-                  "
-                  :style="isDark ? 'color: white !important' : ''"
-                >
-                  {{ getProfile['category'] }}
-                </v-chip>
+                <star-rating :value="profile['star_rating']" />
+                <profile-tag>{{ profile['category'] }}</profile-tag>
               </div>
               <div class="text-caption text-sm-body-2 pb-2">
-                {{ getProfile['address'] }}
+                {{ profile['address'] }}
               </div>
               <div class="d-flex align-center">
-                <circle-rating :value="getProfile['review_rating']" />
+                <circle-rating :value="profile['review_rating']" />
                 <span class="text-caption text-sm-body-2 pl-2">
-                  {{ getProfile['named_rating'] }} ·&nbsp;
+                  {{ profile['named_rating'] }} ·&nbsp;
                 </span>
                 <span class="text-caption text-sm-body-2">
-                  {{ getProfile['review_count'].toLocaleString() }} reviews
+                  {{ profile['review_count'].toLocaleString() }} reviews
                 </span>
               </div>
             </div>
@@ -41,48 +31,25 @@
 
           <!-- end-profile -->
 
-          <div id="gallery" class="xs-no-gutters">
+          <div id="gallery" class="no-side-paddings">
             <v-divider class="d-none d-sm-block mx-3"></v-divider>
-
-            <v-tabs
-              id="photos-tab"
-              :fixed-tabs="isXs ? true : false"
-              centered
-              :height="isXs ? 44 : 53"
-              background-color="transparent"
-              :color="isDark ? 'white' : 'rgba(0,0,0,.87)'"
-            >
-              <v-tab>
-                <div class="d-flex align-center text-caption">
-                  <v-icon
-                    :size="isXs ? 22 : 16"
-                    left
-                    style="margin-right: 0"
-                    color="gray darken-4"
-                  >
-                    mdi-grid
-                  </v-icon>
-                  <span
-                    class="d-none d-sm-flex font-weight-medium pl-2"
-                    style="font-size: 0.75rem; padding-top: 2px"
-                  >
-                    Photos
-                  </span>
-                </div>
-              </v-tab>
-            </v-tabs>
-
+            <photos-subtitle />
             <v-chip-group
               id="category-select"
               v-model="image_category"
-              :active-class="`primary--text ${isXs ? '' : 'font-weight-bold'}`"
+              :active-class="`
+                primary--text 
+                ${isXs ? '' : 'font-weight-bold'}
+              `"
               :show-arrows="isXs ? false : true"
-              :style="`margin-top: ${isXs ? '0' : '-4px'};`"
-              :class="isXs ? 'py-2' : ''"
+              :style="`
+                margin-top: ${isXs ? '0' : '-4px'};
+                padding-left:${isXs ? '7.5px' : '0'};
+                `"
+              class="py-sm-2"
             >
-              <span style="padding-right: 7.5px" class="d-sm-none"></span>
               <v-chip
-                v-for="category in getImgCategories"
+                v-for="category in img_categories"
                 :key="category"
                 class="text-sz-xs font-weight-medium"
                 outlined
@@ -92,19 +59,21 @@
               </v-chip>
             </v-chip-group>
 
-            <image-dialog></image-dialog>
+            <image-dialog />
 
-            <v-window v-model="image_category" :class="isXs ? '' : 'pt-2'">
-              <v-window-item
-                v-for="category in getImgCategories"
-                :key="category"
-              >
+            <v-window
+              id="gallery-grid"
+              v-model="image_category"
+              class="pt-sm-2"
+            >
+              <v-window-item v-for="category in img_categories" :key="category">
                 <div class="d-flex flex-wrap">
                   <div
-                    :style="`flex: 0 0 33.333333%; padding: ${
-                      isXs ? '1' : '12'
-                    }px;`"
-                    v-for="(img, index) in getImg[category]"
+                    :style="`
+                      flex: 0 0 33.333333%;
+                      padding: ${isXs ? '1px' : '12px'};
+                    `"
+                    v-for="(img, index) in images[category]"
                     :key="index"
                   >
                     <v-img
@@ -114,7 +83,7 @@
                       :srcset="`${img.size_sm} 350w`"
                       :alt="`${category}-${index}`"
                       :aspect-ratio="1"
-                      @click="zoomImg(getImg[category], index)"
+                      @click="zoomImg(images[category], index)"
                     />
                   </div>
                 </div>
@@ -124,12 +93,9 @@
 
           <!-- end-gallery -->
 
-          <v-divider
-            class="mb-8 rounded-lg d-none d-sm-block"
-            style="margin-top: 20px"
-          ></v-divider>
+          <v-divider class="mb-8 rounded-lg d-none d-sm-block mt-5"></v-divider>
 
-          <v-expansion-panels class="d-none d-sm-block" id="raw-data">
+          <v-expansion-panels id="raw-data" class="d-none d-sm-block">
             <v-expansion-panel>
               <v-expansion-panel-header class="text-h5 font-weight-medium">
                 Raw Data
@@ -142,16 +108,7 @@
         </div>
       </v-container>
     </v-main>
-
-    <v-footer class="d-none d-sm-flex py-5 px-0" absolute>
-      <div class="max-w-screen-md mx-auto px-3" style="width: 100%">
-        <span style="font-family: 'Roboto'; font-size: 0.9375rem"> © </span>
-        <span style="word-spacing: 7px">Wisatabook · </span>
-        <span style="font-family: 'Roboto'; font-size: 0.875rem"
-          >Terms &amp; Condition</span
-        >
-      </div>
-    </v-footer>
+    <standard-footer />
   </div>
 </template>
 
@@ -159,9 +116,12 @@
 import { mapGetters } from 'vuex'
 import CircleRating from '../components/CircleRating.vue'
 import ImageDialog from '../components/ImageDialog.vue'
+import PhotosSubtitle from '../components/PhotosSubtitle.vue'
+import ProfileTag from '../components/ProfileTag.vue'
 import ResponsiveAvatar from '../components/ResponsiveAvatar.vue'
 import StarRating from '../components/StarRating.vue'
 import ThemeSwitchBar from '../components/ThemeSwitchBar.vue'
+import StandardFooter from '../components/StandardFooter.vue'
 
 export default {
   components: {
@@ -170,6 +130,9 @@ export default {
     StarRating,
     ImageDialog,
     ThemeSwitchBar,
+    ProfileTag,
+    PhotosSubtitle,
+    StandardFooter,
   },
 
   async mounted() {
@@ -193,7 +156,11 @@ export default {
     raw_data() {
       return this.$store.state.hotel
     },
-    ...mapGetters(['getProfile', 'getImgCategories', 'getImg']),
+    ...mapGetters({
+      profile: 'getProfile',
+      img_categories: 'getImgCategories',
+      images: 'getImg',
+    }),
   },
   methods: {
     toggleDarkTheme() {
@@ -211,39 +178,21 @@ export default {
 </script>
 
 <style lang="scss">
-// For development
+/* For Development */
+
 // * {
 //   outline: red 1px dotted !important;
 // }
 
-.container {
-  .lite-margin {
-    margin: {
-      top: 48px;
-      bottom: 48px;
-    }
-  }
-}
-
 .v-toolbar__content {
   padding: 0px !important;
-}
-
-.no-transition-child > * {
-  transition: none !important;
 }
 
 .max-w-screen-md {
   max-width: 924px !important;
 }
 
-.xs-no-gutters {
-  margin-left: -12px;
-  margin-right: -12px;
-  max-width: 100vw;
-}
-
-.no-sides {
+.no-side-paddings {
   margin-left: -12px;
   margin-right: -12px;
   max-width: 100vw;
@@ -262,7 +211,7 @@ export default {
   }
 }
 
-@media (max-width: 599px) {
+@media (max-width: 599.9px) {
   .v-tabs-slider-wrapper {
     left: 0px !important;
     width: 100vw !important;

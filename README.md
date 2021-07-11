@@ -149,7 +149,7 @@ Styling of this app leverage:
 - Vuetify SASS variables.
 - Vuetify components props.
 - Vuetify provided classes.
-- Some custom CSS classes in `index.vue`.
+- Some custom CSS classes each component.
 - Inline stylings.
 
 Negative margins, decimal paddings and hardcoded colors are sprinkled in the template to get the pixel perfect look.

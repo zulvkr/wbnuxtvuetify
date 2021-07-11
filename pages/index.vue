@@ -179,6 +179,20 @@ export default {
       }
     },
   },
+  head() {
+    return {
+      title: this.raw_data.name || `Hotel`,
+      meta: [
+        {
+          hid: this.raw_data.name || `Hotel`,
+          name: this.raw_data.name || `Hotel`,
+          content: `Wisatabook is the best place to book \
+              secret hotel deals. Save time and money \
+              with our incredible member-only prices.`,
+        },
+      ],
+    }
+  },
 }
 </script>
 

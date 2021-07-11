@@ -4,18 +4,25 @@ export default {
   ssr: false,
   target: 'static',
   head: {
-    titleTemplate: '%s - wbchallenge',
-    title: 'wbchallenge',
+    titleTemplate: '%s · Secret Deals · Wisatabook',
     htmlAttrs: {
       lang: 'en',
     },
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'apple-touch-icon',
+        sizes: '64x64',
+        href: '/favicon_64x64.png',
+      },
+      { rel: 'shortcut icon', href: '/favicon.ico' },
+    ],
   },
 
   env: {
@@ -34,7 +41,7 @@ export default {
     // See https://github.com/nuxt-community/axios-module#options
     baseURL: process.env.URL,
   },
-  
+
   vuetify: {
     // Custom variables only works with tree shaking.
     customVariables: ['~/assets/variables.scss'],
@@ -67,7 +74,7 @@ export default {
       },
       icons: 'mdi',
     },
-    treeShake: true
+    treeShake: true,
   },
 
   webfontloader: {

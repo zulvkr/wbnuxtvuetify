@@ -14,6 +14,8 @@ It is also my experimentation using Vuex, Vuetify and Nuxt. If you are the inter
   - [Components](#components)
   - [Styling](#styling)
     - [Responsive styling](#responsive-styling)
+  - [Theme variant](#theme-variant)
+  - [Acknowledgement](#acknowledgement)
 
 ## Dependencies
 
@@ -35,7 +37,7 @@ See package.json and [Nuxt command](https://nuxtjs.org/docs/2.x/get-started/comm
 
 ## State
 
-States of the app are managed in both `index.vue` component and Vuex. Vuex is responsible for data wrangling and interaction between components, while `index.vue` maintain state for gallery category.
+States of the app are managed in both `index.vue` component and Vuex. Vuex is responsible for data wrangling and interaction between components, while `index.vue` maintain state of selected `image_category`.
 
 Besides that, this app calls global state `this.$vuetify.breakpoint.xs` and `this.$vuetify.theme.dark` (aliased `isXs` and `isDark`) to check mobile display viewport and dark theme respectively.
 
@@ -121,6 +123,18 @@ Besides that, this app calls global state `this.$vuetify.breakpoint.xs` and `thi
 
 [vue-fragment](https://github.com/Thunberg087/vue-fragment) is installed so multi-root component can be used. It's an implementation of [Vue 3 fragment](https://v3.vuejs.org/guide/migration/fragments.html#overview) / [React fragment](https://reactjs.org/docs/fragments.html) in vue.js v2.
 
+Each components self-explained by the name:
+
+- CircleRating.vue
+- ImageDialog.vue
+- NFooter.vue: The footer
+- PhotosSubtitle.vue: The photos tab with grid icon
+- ProfileTag.vue: The hotel tag on the right side of star rating
+- ResponsiveAvatar.vue
+- StarRating.vue
+- ThemeSwitchBar.vue
+- ThemeSwitcher.vue
+
 ## Styling
 
 Styling of this app leverage:
@@ -131,8 +145,6 @@ Styling of this app leverage:
 - Vuetify provided classes.
 - Some custom CSS classes in `index.vue`.
 - Inline stylings.
-
-Admittedly, custom CSS classes are made only due to some CSS are unreadable when inlined.
 
 Negative margins, decimal paddings and hardcoded colors are sprinkled in the template to get the pixel perfect look.
 
@@ -170,3 +182,11 @@ Both has pros and cons:
 
 - CSS based responsiveness is only limited to spacing, display and typography.
 - JS based responsiveness is flexible, but it's verbose and always evaluate view port as 0 in server side. Need the page to be rehydrated to work. It may cause major layout shift when rehydrate.
+
+## Theme variant
+
+There is dark and light theme variant. The theme is controlled by `$vuetify.theme.dark: Boolean` global state, aliased `isDark` in some components. This state mutated directly by `ThemeSwitcher.vue`
+
+## Acknowledgement
+
+The design and the API is provided by wisatabook.com for a code challenge.

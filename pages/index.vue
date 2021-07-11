@@ -156,9 +156,6 @@ export default {
     isXs() {
       return this.$vuetify.breakpoint.xs
     },
-    isDark() {
-      return this.$vuetify.theme.dark
-    },
     raw_data() {
       return this.$store.state.hotel
     },
@@ -217,7 +214,7 @@ export default {
 
 /* For Development */
 
-* {
-  outline: red 1px dotted !important;
-}
+// * {
+//   outline: red 1px dotted !important;
+// }
 </style>

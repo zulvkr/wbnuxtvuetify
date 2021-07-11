@@ -1,5 +1,6 @@
 <template>
   <v-app-bar
+    id="theme-switch-bar"
     fixed
     :color="$vuetify.theme.dark ? 'rgb(18, 18, 18)' : 'white'"
     elevate-on-scroll
@@ -24,8 +25,8 @@ export default {
 }
 </script>
 
-<style scoped>
-.v-toolbar__content {
+<style>
+#theme-switch-bar .v-toolbar__content {
   padding: 0px !important;
 }
 </style>

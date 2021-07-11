@@ -7,13 +7,16 @@ It is also my experimentation using Vuex, Vuetify and Nuxt. If you are the inter
 
 The webpage is deployed [here in Netlify](https://brave-payne-6e0dd1.netlify.app/)
 
+## Table of Contents
+
 - [Quick Walkthrough](#quick-walkthrough)
+  - [Table of Contents](#table-of-contents)
   - [Dependencies](#dependencies)
   - [Installation](#installation)
   - [State](#state)
     - [Vuex](#vuex)
       - [Getters](#getters)
-      - [Vuex Overlay Module](#vuex-overlay-module)
+      - [Overlay Module](#overlay-module)
   - [Components](#components)
   - [Styling](#styling)
     - [Responsive styling](#responsive-styling)
@@ -100,13 +103,13 @@ Besides that, this app calls global state `this.$vuetify.breakpoint.xs` (aliased
 }
 ```
 
-#### Vuex Overlay Module
+#### Overlay Module
 
 This module is used in index.vue page and ImageDialog.vue component.
 
-- `image_dialog: Boolean`: True => overlay visibile.
+- `image_dialog: Boolean`: Control overlay visibility.
 - `image_index: Number` Index of current selected image.
-- `image_list: Array`: Array of image objects for selected category.
+- `image_list: Array`: Array of image objects for current selected image category.
 
 
 ```js
@@ -143,7 +146,7 @@ Each components self-explained by the name:
 
 ## Styling
 
-Styling of this app leverage:
+Styling of the app leverage:
 
 - Vuetify settings in nuxt.config.js.
 - Vuetify SASS variables.
@@ -152,7 +155,7 @@ Styling of this app leverage:
 - Some custom CSS classes each component.
 - Inline stylings.
 
-Negative margins, decimal paddings and hardcoded colors are sprinkled in the template to get the pixel perfect look.
+Negative margins, decimal paddings and hardcoded colors are sprinkled in the template to get the pixel perfect look. The original website seems to used them too so I took some liberties to do it.
 
 ### Responsive styling
 

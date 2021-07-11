@@ -106,6 +106,8 @@ Besides that, this app calls global state `this.$vuetify.breakpoint.xs` (aliased
 - `image_index: Number` Index of current selected image.
 - `image_list: Array`: Array of image objects filtered by category.
 
+This module is used in index.vue page and ImageDialog.vue component.
+
 ```js
 [
   {
@@ -129,8 +131,8 @@ Besides that, this app calls global state `this.$vuetify.breakpoint.xs` (aliased
 Each components self-explained by the name:
 
 - CircleRating.vue
-- ImageDialog.vue
-- NFooter.vue: The footer
+- ImageDialog.vue: The overlay image component
+- NFooter.vue
 - PhotosSubtitle.vue: The photos tab with grid icon
 - ProfileTag.vue: The hotel tag on the right side of star rating
 - ResponsiveAvatar.vue
@@ -184,7 +186,7 @@ export default {
 Both has pros and cons:
 
 - CSS based responsiveness is only limited to spacing, display and typography.
-- JS based responsiveness is flexible, but it's verbose and always evaluate view port as 0 in server side. Need the page to be rehydrated to work. It may cause major layout shift when rehydrate.
+- JS based responsiveness is flexible, but it's verbose and always evaluate view port as 0 in server side. JavaScript is generally more resource costly for browser than CSS.
 
 ## Theme variant
 

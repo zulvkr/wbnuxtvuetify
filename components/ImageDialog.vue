@@ -15,7 +15,6 @@
             class="mx-auto"
             :key="index"
             :src="img.size_lg"
-            :lazy-src="img.size_xs"
           />
           <v-carousel-reverse-transition />
         </v-carousel>

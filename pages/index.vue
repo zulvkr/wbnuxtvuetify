@@ -1,5 +1,5 @@
 <template>
-  <p v-if="$fetchState.pending">Fetching hotel...</p>
+  <p v-if="$fetchState.pending"></p>
   <p v-else-if="$fetchState.error">An error occurred :(</p>
   <div v-else>
     <theme-switch-bar />

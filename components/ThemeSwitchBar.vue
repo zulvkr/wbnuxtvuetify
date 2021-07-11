@@ -23,3 +23,9 @@ export default {
   
 }
 </script>
+
+<style scoped>
+.v-toolbar__content {
+  padding: 0px !important;
+}
+</style>

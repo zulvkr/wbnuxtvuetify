@@ -4,18 +4,20 @@
       :value="image_dialog"
       v-on:input="toggleImgDialog"
       max-width="1024"
+      content-class="elevation-0"
     >
       <div>
         <v-carousel hide-delimiters height="max-content" :value="image_index">
           <v-carousel-item
+            v-for="(img, index) in image_list"
+            continuous="false"
             max-width="900"
             class="mx-auto"
-            v-for="(img, index) in image_list"
             :key="index"
             :src="img.size_lg"
-            transition="slide-x-transition"
-            reverse-transition="slide-x-reverse-transition"
-          ></v-carousel-item>
+            :lazy-src="img.size_xs"
+          />
+          <v-carousel-reverse-transition />
         </v-carousel>
       </div>
     </v-dialog>

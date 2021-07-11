@@ -37,6 +37,7 @@
             <v-chip-group
               id="category-select"
               v-model="image_category"
+              class="py-sm-2"
               :active-class="`
                 primary--text 
                 ${isXs ? '' : 'font-weight-bold'}
@@ -45,8 +46,7 @@
               :style="`
                 margin-top: ${isXs ? '0' : '-4px'};
                 padding-left:${isXs ? '7.5px' : '0'};
-                `"
-              class="py-sm-2"
+              `"
             >
               <v-chip
                 v-for="category in img_categories"
@@ -66,27 +66,33 @@
               v-model="image_category"
               class="pt-sm-2"
             >
-              <v-window-item v-for="category in img_categories" :key="category">
-                <div class="d-flex flex-wrap">
-                  <div
-                    :style="`
+              <v-window-item
+                v-for="category in img_categories"
+                :key="category"
+                transition="none"
+              >
+                <v-lazy>
+                  <div class="d-flex flex-wrap">
+                    <div
+                      :style="`
                       flex: 0 0 33.333333%;
                       padding: ${isXs ? '1px' : '12px'};
                     `"
-                    v-for="(img, index) in images[category]"
-                    :key="index"
-                  >
-                    <v-img
-                      class="img-click-sm"
-                      :lazy-src="img.size_xs"
-                      :src="img.size_lg"
-                      :srcset="`${img.size_sm} 350w`"
-                      :alt="`${category}-${index}`"
-                      :aspect-ratio="1"
-                      @click="zoomImg(images[category], index)"
-                    />
+                      v-for="(img, index) in images[category]"
+                      :key="index"
+                    >
+                      <v-img
+                        class="img-click-sm"
+                        :lazy-src="img.size_xs"
+                        :src="img.size_lg"
+                        :srcset="`${img.size_sm} 350w`"
+                        :alt="`${category}-${index}`"
+                        :aspect-ratio="1"
+                        @click="zoomImg(images[category], index)"
+                      />
+                    </div>
                   </div>
-                </div>
+                </v-lazy>
               </v-window-item>
             </v-window>
           </div>
@@ -108,7 +114,10 @@
         </div>
       </v-container>
     </v-main>
-    <standard-footer />
+
+    <!-- end-main -->
+
+    <n-footer />
   </div>
 </template>
 
@@ -121,7 +130,7 @@ import ProfileTag from '../components/ProfileTag.vue'
 import ResponsiveAvatar from '../components/ResponsiveAvatar.vue'
 import StarRating from '../components/StarRating.vue'
 import ThemeSwitchBar from '../components/ThemeSwitchBar.vue'
-import StandardFooter from '../components/StandardFooter.vue'
+import NFooter from '../components/NFooter.vue'
 
 export default {
   components: {
@@ -132,7 +141,7 @@ export default {
     ThemeSwitchBar,
     ProfileTag,
     PhotosSubtitle,
-    StandardFooter,
+    NFooter,
   },
 
   async mounted() {
@@ -177,17 +186,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
-/* For Development */
-
-// * {
-//   outline: red 1px dotted !important;
-// }
-
-.v-toolbar__content {
-  padding: 0px !important;
-}
-
+<style lang="scss" scoped>
 .max-w-screen-md {
   max-width: 924px !important;
 }
@@ -217,4 +216,10 @@ export default {
     width: 100vw !important;
   }
 }
+
+/* For Development */
+
+// * {
+//   outline: red 1px dotted !important;
+// }
 </style>

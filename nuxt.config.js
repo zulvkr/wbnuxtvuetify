@@ -19,10 +19,9 @@ export default {
   },
 
   env: {
-    baseURL:
-      process.env.URL
-        ? process.env.URL // URL environment in Netlify
-        : 'http://localhost:3000',
+    baseURL: process.env.URL
+      ? process.env.URL // URL environment in Netlify
+      : 'http://localhost:3000',
   },
 
   css: [],
@@ -35,10 +34,9 @@ export default {
     // See https://github.com/nuxt-community/axios-module#options
     baseURL: process.env.URL,
   },
-
+  
   vuetify: {
-    treeShake: true,
-    // Custom variables only works with tree shaking
+    // Custom variables only works with tree shaking.
     customVariables: ['~/assets/variables.scss'],
     theme: {
       dark: false,
@@ -60,7 +58,7 @@ export default {
           info: '#2196F3',
           success: '#4CAF50',
           warning: '#FFC107',
-        }
+        },
       },
     },
     defaultAssets: {
@@ -69,6 +67,7 @@ export default {
       },
       icons: 'mdi',
     },
+    treeShake: true
   },
 
   webfontloader: {

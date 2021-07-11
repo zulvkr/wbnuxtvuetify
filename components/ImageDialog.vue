@@ -1,27 +1,23 @@
 <template>
-  <div class="text-center">
-    <v-dialog
-      :value="image_dialog"
-      v-on:input="toggleImgDialog"
-      max-width="1024"
-      content-class="elevation-0"
-    >
-      <div>
-        <v-carousel hide-delimiters height="max-content" :value="image_index">
-          <v-carousel-item
-            v-for="(img, index) in image_list"
-            continuous="false"
-            max-width="900"
-            class="mx-auto"
-            :aspect-ratio="$vuetify.breakpoint.sm ? 16 / 9 : '' "
-            :key="index"
-            :src="img.size_lg"
-          />
-          <v-carousel-reverse-transition />
-        </v-carousel>
-      </div>
-    </v-dialog>
-  </div>
+  <v-dialog
+    :value="image_dialog"
+    v-on:input="toggleImgDialog"
+    max-width="1024"
+    content-class="elevation-0"
+  >
+    <v-carousel hide-delimiters height="max-content" :value="image_index">
+      <v-carousel-item
+        v-for="(img, index) in image_list"
+        continuous="false"
+        max-width="900"
+        class="mx-auto"
+        :aspect-ratio="$vuetify.breakpoint.sm ? 16 / 9 : ''"
+        :key="index"
+        :src="img.size_lg"
+      />
+      <v-carousel-reverse-transition />
+    </v-carousel>
+  </v-dialog>
 </template>
 
 <script>

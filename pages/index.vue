@@ -39,7 +39,7 @@
             <v-chip-group
               id="category-select"
               v-model="image_category"
-              class="py-sm-2"
+              class="py-2 py-sm-0"
               :active-class="`
                 primary--text 
                 ${isXs ? '' : 'font-weight-bold'}
@@ -73,28 +73,26 @@
                 :key="category"
                 transition="none"
               >
-                <v-lazy>
-                  <div class="d-flex flex-wrap">
-                    <div
-                      :style="`
+                <div class="d-flex flex-wrap">
+                  <div
+                    :style="`
                       flex: 0 0 33.333333%;
                       padding: ${isXs ? '1px' : '12px'};
                     `"
-                      v-for="(img, index) in images[category]"
-                      :key="index"
-                    >
-                      <v-img
-                        class="img-click-sm"
-                        :lazy-src="img.size_xs"
-                        :src="img.size_lg"
-                        :srcset="`${img.size_sm} 350w`"
-                        :alt="`${category}-${index}`"
-                        :aspect-ratio="1"
-                        @click="zoomImg(images[category], index)"
-                      />
-                    </div>
+                    v-for="(img, index) in images[category]"
+                    :key="index"
+                  >
+                    <v-img
+                      class="img-click-sm"
+                      :lazy-src="img.size_xs"
+                      :src="img.size_lg"
+                      :srcset="`${img.size_sm} 350w`"
+                      :alt="`${category}-${index}`"
+                      :aspect-ratio="1"
+                      @click="zoomImg(images[category], index)"
+                    />
                   </div>
-                </v-lazy>
+                </div>
               </v-window-item>
             </v-window>
           </div>
@@ -196,7 +194,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .max-w-screen-md {
   max-width: 924px !important;
 }
@@ -208,9 +206,6 @@ export default {
 }
 
 @media (min-width: 600px) {
-  .v-tabs-slider-wrapper {
-    top: 0;
-  }
   .img-click-sm {
     transition: opacity 0.4s ease-in-out;
     cursor: pointer;
@@ -220,16 +215,9 @@ export default {
   }
 }
 
-@media (max-width: 599.9px) {
-  .v-tabs-slider-wrapper {
-    left: 0px !important;
-    width: 100vw !important;
-  }
-}
-
 /* For Development */
 
-// * {
-//   outline: red 1px dotted !important;
-// }
+* {
+  outline: red 1px dotted !important;
+}
 </style>

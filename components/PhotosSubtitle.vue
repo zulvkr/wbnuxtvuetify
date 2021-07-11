@@ -40,3 +40,18 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+@media (min-width: 600px) {
+  #photos-tab .v-tabs-slider-wrapper {
+    top: 0;
+  }
+}
+
+@media (max-width: 599.9px) {
+  #photos-tab .v-tabs-slider-wrapper {
+    left: 0px !important;
+    width: 100vw !important;
+  }
+}
+</style>

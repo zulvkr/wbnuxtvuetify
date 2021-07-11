@@ -13,6 +13,7 @@
             continuous="false"
             max-width="900"
             class="mx-auto"
+            :aspect-ratio="$vuetify.breakpoint.sm ? 16 / 9 : '' "
             :key="index"
             :src="img.size_lg"
           />

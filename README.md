@@ -39,7 +39,7 @@ See package.json and [Nuxt command](https://nuxtjs.org/docs/2.x/get-started/comm
 
 States of the app are managed in both `index.vue` component and Vuex. Vuex is responsible for data wrangling and interaction between components, while `index.vue` maintain state of selected `image_category`.
 
-Besides that, this app calls global state `this.$vuetify.breakpoint.xs` and `this.$vuetify.theme.dark` (aliased `isXs` and `isDark`) to check mobile display viewport and dark theme respectively.
+Besides that, this app calls global state `this.$vuetify.breakpoint.xs` (aliased `isXs`) and `this.$vuetify.theme.dark` to check mobile display viewport and dark theme respectively.
 
 ### Vuex
 
@@ -47,12 +47,12 @@ Besides that, this app calls global state `this.$vuetify.breakpoint.xs` and `thi
 
 #### Getters
 
-- `getProfile`: return object derived from `catalog_id` with additional `named_rating` property.
+- `getProfile`: return object derived from `catalog_data` with additional `named_rating` property.
 
 ```js
 {
   "named_rating": "Excellent",
-  ...catalog_id
+  ...catalog_data
 }
 ```
 

@@ -2,7 +2,10 @@
 
 This piece of software is intended for coding challenge of a front-end design interview. The challenge is to replicate the design of a webpage that uses Vuetify.
 
-It is also my experimentation using Vuex, Vuetify and Nuxt. If you are the interviewer, I hope this readme find you well. You could also access the video version in [this youtube video](/)
+
+It is also my experimentation using Vuex, Vuetify and Nuxt. If you are the interviewer, I hope this readme find you well. You could also access the video in [this youtube video](https://youtu.be/tjtzAXCR7G0)
+
+The webpage is deployed [here in Netlify](https://brave-payne-6e0dd1.netlify.app/)
 
 - [Quick Walkthrough](#quick-walkthrough)
   - [Dependencies](#dependencies)
@@ -185,7 +188,7 @@ Both has pros and cons:
 
 ## Theme variant
 
-There is dark and light theme variant. The theme is controlled by `$vuetify.theme.dark: Boolean` global state, aliased `isDark` in some components. This state mutated directly by `ThemeSwitcher.vue`
+There is dark and light theme variant. The theme is controlled by `$vuetify.theme.dark: Boolean` global state. This state is mutated directly by `ThemeSwitcher.vue`.
 
 ## Acknowledgement
 

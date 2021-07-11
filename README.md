@@ -155,7 +155,7 @@ Styling of the app leverage:
 - Some custom CSS classes each component.
 - Inline stylings.
 
-Negative margins, decimal paddings and hardcoded colors are sprinkled in the template to get the pixel perfect look. The original website seems to used them too so I took some liberties to do it.
+Negative margins, decimal paddings and hardcoded colors are sprinkled in the template to get the pixel perfect look.
 
 ### Responsive styling
 

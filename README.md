@@ -2,10 +2,11 @@
 
 This piece of software is intended for coding challenge of a front-end design interview. The challenge is to replicate the design of a webpage that uses Vuetify.
 
+If you are the interviewer, I hope this readme find you well. You could also access the video in [this youtube video](https://youtu.be/tjtzAXCR7G0). Webpage is deployed [here in Netlify](https://brave-payne-6e0dd1.netlify.app/)
 
-It is also my experimentation using Vuex, Vuetify and Nuxt. If you are the interviewer, I hope this readme find you well. You could also access the video in [this youtube video](https://youtu.be/tjtzAXCR7G0)
+This is also my first time using Nuxt and Vuetify, I'm surprised on how many magic is crammed in Nuxt compared to Next.js. It's much bigger framework than I assumed at first.
 
-The webpage is deployed [here in Netlify](https://brave-payne-6e0dd1.netlify.app/)
+Vuetify is an opinionated framework that need some hacks to costumize as expected. But generally it's ok and very viable choice for some app.
 
 ## Table of Contents
 

@@ -104,7 +104,7 @@ Besides that, this app calls global state `this.$vuetify.breakpoint.xs` (aliased
 
 - `image_dialog: Boolean`: True => overlay visibile.
 - `image_index: Number` Index of current selected image.
-- `image_list: Array`: Array of image objects filtered by category.
+- `image_list: Array`: Array of image objects for selected category.
 
 ```js
 [
@@ -115,7 +115,7 @@ Besides that, this app calls global state `this.$vuetify.breakpoint.xs` (aliased
     "size_xs": "...url"
   },
   {
-    "caption": "Category 2",
+    "caption": "Category 1",
     ...imageUrls
   },
   // ...

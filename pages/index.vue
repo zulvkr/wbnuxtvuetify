@@ -1,5 +1,7 @@
 <template>
-  <div v-if="isDataLoaded">
+  <p v-if="$fetchState.pending">Fetching hotel...</p>
+  <p v-else-if="$fetchState.error">An error occurred :(</p>
+  <div v-else>
     <theme-switch-bar />
     <v-main class="py-14 py-md-16">
       <v-container class="max-w-screen-md">
@@ -144,14 +146,11 @@ export default {
     NFooter,
   },
 
-  async mounted() {
-    // only load template after data fetched
+  async fetch() {
     await this.$store.dispatch('fetchHotel')
-    this.isDataLoaded = true
   },
   data() {
     return {
-      isDataLoaded: false,
       image_category: 'All',
     }
   },
@@ -172,9 +171,6 @@ export default {
     }),
   },
   methods: {
-    toggleDarkTheme() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark
-    },
     zoomImg(list, index) {
       if (!this.isXs) {
         this.$store.commit('overlay/SET_IMG_LIST', list)

@@ -41,11 +41,11 @@ Besides that, this app calls global state `this.$vuetify.breakpoint.xs` and `thi
 
 ### Vuex
 
-- `hotel`: contains raw data acquired from Axios.
+- `hotel` state contains raw data acquired from Axios. See [data.json](./static/data.json)
 
 #### Getters
 
-- `getProfile`: return object derived from `catalog_id` data with additional `named_rating` property. See [data.json](./static/data.json)
+- `getProfile`: return object derived from `catalog_id` with additional `named_rating` property.
 
 ```js
 {
@@ -57,10 +57,13 @@ Besides that, this app calls global state `this.$vuetify.breakpoint.xs` and `thi
 - `getImgCategories`: return array of unique captions of all images with additional `"All"` category.
 
 ```js
-["All", ...uniqueCategories]
+[ 
+  "All",
+  ...uniqueCategories
+]
 ```
 
-- `getImg`: return object that contains each category. Every category contains filtered `image` objects.
+- `getImg`: return object that contains each category. Every category contains `image` objects with corresponding caption.
 
 ```js
 {
@@ -94,9 +97,9 @@ Besides that, this app calls global state `this.$vuetify.breakpoint.xs` and `thi
 
 #### Vuex Overlay Module
 
-- `image_dialog`: Boolean to control overlay visibility.
-- `image_index`: Index of current selected image.
-- `image_list`: Array of image objects filtered by category.
+- `image_dialog: Boolean`: True => overlay visibile.
+- `image_index: Number` Index of current selected image.
+- `image_list: Array`: Array of image objects filtered by category.
 
 ```js
 [
@@ -114,8 +117,6 @@ Besides that, this app calls global state `this.$vuetify.breakpoint.xs` and `thi
 ]
 ```
 
-Both `image_list` and `image_index` is undefined initially. Click on image will set their data.
-
 ## Components
 
 [vue-fragment](https://github.com/Thunberg087/vue-fragment) is installed so multi-root component can be used. It's an implementation of [Vue 3 fragment](https://v3.vuejs.org/guide/migration/fragments.html#overview) / [React fragment](https://reactjs.org/docs/fragments.html) in vue.js v2.
@@ -129,17 +130,17 @@ Styling of this app leverage:
 - Vuetify components props.
 - Vuetify provided classes.
 - Some custom CSS classes in `index.vue`.
-- Inline styling.
+- Inline stylings.
 
 Admittedly, custom CSS classes are made only due to some CSS are unreadable when inlined.
 
-Negative margins, decimal paddings and hardcoded colors are sprinkled in the template to get the match original webpage.
+Negative margins, decimal paddings and hardcoded colors are sprinkled in the template to get the pixel perfect look.
 
 ### Responsive styling
 
-Responsiveness in Vuetify is managed in 2 different ways:
+Responsiveness is managed in 2 different ways:
 
-- CSS based, breakpoint variant available for padding, margin, display and typography.
+- CSS based, breakpoint variant available for vuetify padding, margin, display and typography.
 
 ```html
 <div class="d-none d-sm-flex">
@@ -167,7 +168,5 @@ export default {
 
 Both has pros and cons:
 
-- CSS based responsiveness is only limited to spacing, display and typography, which is very very limited.
-- JS based responsiveness is flexible, but it's verbose and it will always evaluate view port as 0 in server side.
-
-In my case, I didn't differentiate since the page is not server rendered.
+- CSS based responsiveness is only limited to spacing, display and typography.
+- JS based responsiveness is flexible, but it's verbose and always evaluate view port as 0 in server side. Need the page to be rehydrated to work. It may cause major layout shift when rehydrate.

@@ -3,8 +3,8 @@
     :value="value"
     color="secondary"
     :rotate="270"
-    :size="$vuetify.breakpoint.xs ? 32 : 34"
-    :width="$vuetify.breakpoint.xs ? 3 : 3.5"
+    :size="isXs ? 32 : 34"
+    :width="isXs ? 3 : 3.5"
   >
     <div class="text-caption text-sm-body-2 font-weight-medium">
       {{ value }}
@@ -16,6 +16,11 @@
 export default {
   props: {
     value: Number,
+  },
+  computed: {
+    isXs() {
+      return this.$vuetify.breakpoint.xs
+    },
   },
 }
 </script>

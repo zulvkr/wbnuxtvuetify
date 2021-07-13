@@ -15,7 +15,6 @@
         :key="index"
         :src="img.size_lg"
       />
-      <v-carousel-reverse-transition />
     </v-carousel>
   </v-dialog>
 </template>
